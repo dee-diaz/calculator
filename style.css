@@ -1,3 +1,38 @@
+:root {
+  --clr-primary: #485261;
+  --clr-secondary: #283345;
+  --clr-accent: #C48BE9;
+
+  --surface-primary: var(--clr-secondary);
+  --clr-bg: var(--clr-primary);
+
+  --clr-text-primary: #ffffff;
+  --clr-text-secondary: #b2b2b2;
+
+  --rounded-2xl: 1rem;
+  --rounded-3xl: 1.5rem;
+}
+
+@font-face {
+  font-family: "BrittiSans";
+  src: url("fonts/BrittiSansTrial-Regular.otf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BrittiSans";
+  src: url("fonts/BrittiSansTrial-Semibold.otf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BrittiSans";
+  src: url("fonts/BrittiSansTrial-Bold.otf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
 
 /* Box sizing rules */
 *,
@@ -14,32 +49,48 @@ html {
 }
 
 /* Remove default margin in favour of better control in authored CSS */
-body, h1, h2, h3, h4, p,
-figure, blockquote, dl, dd {
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
   margin-block-end: 0;
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role='list'],
-ol[role='list'] {
+ul[role="list"],
+ol[role="list"] {
   list-style: none;
 }
 
 /* Set core body defaults */
 body {
   min-height: 100vh;
-  line-height: 1.5;
+  line-height: normal;
+  color: var(--clr-text-primary);
 }
 
 /* Set shorter line heights on headings and interactive elements */
-h1, h2, h3, h4,
-button, input, label {
+h1,
+h2,
+h3,
+h4,
+button,
+input,
+label {
   line-height: 1.1;
 }
 
 /* Balance text wrapping on headings */
-h1, h2,
-h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   text-wrap: balance;
 }
 
@@ -56,9 +107,17 @@ picture {
   display: block;
 }
 
+button {
+  color: var(--clr-text-primary);
+  border: none;
+  outline: none;
+}
+
 /* Inherit fonts for inputs and buttons */
-input, button,
-textarea, select {
+input,
+button,
+textarea,
+select {
   font-family: inherit;
   font-size: inherit;
 }
@@ -71,4 +130,105 @@ textarea:not([rows]) {
 /* Anything that has been anchored to should have extra scroll margin */
 :target {
   scroll-margin-block: 5ex;
+}
+
+
+
+body {
+  background-color: var(--clr-bg);
+  font-family: "BrittiSans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-rendering: optimizeSpeed;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.calculator {
+  width: 26.563rem;
+  height: 42.375rem;
+  border-radius: var(--rounded-3xl);
+  background-color: var(--surface-primary);
+  padding: 4rem 2.5rem 2.5rem;
+  box-shadow: 4px 4px 12px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================
+   BLOCK: Display
+   ========================== */
+.display {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  text-align: right;
+  margin-bottom: 1.75rem;
+}
+
+.display__expression {
+  color: var(--clr-text-secondary);
+  font-size: 1rem;
+}
+
+.display__result {
+  font-size: 3rem;
+}
+
+/* ==========================
+   BLOCK: Keypad
+   ========================== */
+.digits {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+}
+
+.stack-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.digits__item {
+  border-radius: var(--rounded-2xl);
+  width: 4.875rem;
+  height: 4.875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #283345;
+  box-shadow: 1px 1px 2px 0px rgba(50, 63, 86, 0.3) inset,
+    -1px -1px 2px 0px rgba(30, 39, 52, 0.5) inset,
+    -4px 4px 8px 0px rgba(30, 39, 52, 0.2),
+    4px -4px 8px 0px rgba(30, 39, 52, 0.2),
+    -4px -4px 8px 0px rgba(50, 63, 86, 0.9),
+    4px 4px 10px 0px rgba(30, 39, 52, 0.9);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+
+
+
+/* ==========================
+   UTILITIES
+========================== */
+.u-w-lg {
+  width: 10.563rem;
+}
+.u-text-28 {
+  font-size: 1.75rem;
+}
+.u-clr-secondary {
+  color: var(--clr-text-secondary);
+}
+
+.u-clr-accent {
+  color: var(--clr-accent);
 }
