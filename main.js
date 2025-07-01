@@ -76,11 +76,9 @@ function setOperator(value) {
   // Change state to ENTERING_OPERATOR if the first num is entered
   if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
     currentState = STATES.OPERATOR;
-  } else {
-    return;
   }
 
-  console.info(currentState); // helper
+  console.log(currentState); // helper
 
   if (currentState === STATES.OPERATOR) {
     operator = value;
