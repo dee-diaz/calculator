@@ -3,10 +3,10 @@ const displayEl = document.querySelector(".display__result");
 const displayExp = document.querySelector(".display__expression");
 
 const STATES = {
-  OPERAND_1: "ENTER_FIRST_NUMBER",
-  OPERAND_2: "ENTER_SECOND_NUMBER",
-  OPERATOR: "ENTER_OPERATOR",
-  EQUALS: "ENTER EQUALS",
+  OPERAND_1: "ENTERING_FIRST_NUMBER",
+  OPERAND_2: "ENTERING_SECOND_NUMBER",
+  OPERATOR: "ENTERING_OPERATOR",
+  EQUALS: "PRESSED_EQUALS",
 };
 
 let currentState = STATES.OPERAND_1;
@@ -15,44 +15,34 @@ let operand1;
 let operand2;
 let operator;
 
-function add(a, b) {
-  return a + b;
-}
+function operate() {
 
-function subtract(a, b) {
-  return a - b;
-}
-
-function multiply(a, b) {
-  return a * b;
-}
-
-function divide(a, b) {
-  return a / b;
-}
-
-function operate(a, b, oper) {
-  
 }
 
 function setOperands(num) {
   if (currentState === STATES.OPERAND_1) {
-      console.log(currentState);
-      operand1 = num;   
-      displayValue(operand1);
+    console.log(currentState); // helper
+    if (operand1 === undefined) {
+      operand1 = "" + num;
+    } else {
+      operand1 += String(num);
+    }
+    operand1 = Number(operand1);
+    console.log("Operand 1: " + operand1, typeof operand1); // helper
+    displayValue(num);
   }
 
-  if (currentState === STATES.OPERATOR) {
-    currentState = STATES.OPERAND_2;
-    console.log(currentState);
-    operand2 = num;
-    
-    // if (currentState === STATES.OPERAND_2) {
-    //   operand2 = Number(String(operand2) + String(num));
-    // }
-
-    displayValue(operand2);
-  }
+  // if (currentState === STATES.OPERATOR) {
+  //   currentState = STATES.OPERAND_2;
+  //   console.log(currentState);
+  //   operand2 = num;
+  //
+  //   // if (currentState === STATES.OPERAND_2) {
+  //   //   operand2 = Number(String(operand2) + String(num));
+  //   // }
+  //
+  //   displayValue(operand2);
+  // }
 }
 
 function setOperator(value) {
@@ -81,7 +71,6 @@ function setOperator(value) {
 function displayValue(value) {
   if (typeof value !== "string") displayEl.textContent = displayEl.textContent.concat(String(value));
   displayEl.textContent.concat(value);
-
 }
 
 function handleUserInput(e) {
@@ -102,3 +91,20 @@ function handleUserInput(e) {
 }
 
 keypad.addEventListener("click", handleUserInput);
+
+
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+function divide(a, b) {
+  return a / b;
+}
