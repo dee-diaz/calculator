@@ -31,24 +31,31 @@ function setOperands(num) {
     operand1 = Number(operand1);
 
     console.log("Operand 1 = " + operand1, typeof operand1); // helper
-
-    displayValue(num);
   }
 
-  // if (currentState === STATES.OPERATOR) {
-  //   currentState = STATES.OPERAND_2;
-  //   console.log(currentState);
-  //   operand2 = num;
-  //
-  //   // if (currentState === STATES.OPERAND_2) {
-  //   //   operand2 = Number(String(operand2) + String(num));
-  //   // }
-  //
-  //   displayValue(operand2);
-  // }
+
+
+  if (currentState === STATES.OPERATOR) {
+    operand2 = "" + num;
+    currentState = STATES.OPERAND_2;
+    operand2 = Number(operand2);
+
+    console.log("Operand 2 = " + operand2, typeof operand2); // helper
+
+  } else if (currentState === STATES.OPERAND_2) {
+    operand2 += String(num);
+    operand2 = Number(operand2);
+
+    console.log("Operand 1 = " + operand1, typeof operand1); // helper
+    console.log("Operand 2 = " + operand2, typeof operand2); // helper
+
+  }
+
+  displayValue(num);
 }
 
 function setOperator(value) {
+  // Change state to ENTERING_OPERATOR if the first num is entered
   if (operand1 !== undefined) {
     currentState = STATES.OPERATOR;
   } else {
@@ -56,30 +63,30 @@ function setOperator(value) {
   }
 
   console.info(currentState); // helper
-  // if (currentState === STATES.OPERAND_2 && value === "=") {
-  //   currentState = STATES.EQUALS;
-  // }
 
   if (currentState === STATES.OPERATOR) {
     operator = value;
+    displayValue(operator);
 
     console.log("Operator: " + operator); // helper
-
-    displayValue(operator);
   }
 }
 
 function displayValue(value) {
-  displayEl.textContent += value
+  if (currentState === STATES.OPERAND_1 || currentState === STATES.OPERAND_2) {
+    displayEl.textContent += value;
+  }
+
+  if (currentState === STATES.OPERATOR) {
+    let hasOperatorInDisplay = /[+\-*/]/.test(displayEl.textContent);
+    if (hasOperatorInDisplay) {
+      displayEl.textContent = displayEl.textContent.slice(0, -1) + value;
+    } else {
+      displayEl.textContent += value;
+    }
+  }
 
   console.log("Current text content: " + displayEl.textContent); // helper
-
-  // if (typeof value === "number") {
-  //   // displayEl.textContent = displayEl.textContent.concat(String(value));
-  //   displayEl.textContent += String(value);
-  // } else if(typeof value === "string") {
-  //   displayEl.textContent += value;
-  // }
 }
 
 function handleUserInput(e) {
