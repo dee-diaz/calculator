@@ -14,9 +14,28 @@ let currentState = STATES.OPERAND_1;
 let operand1;
 let operand2;
 let operator;
+let result;
 
-function operate() {
-
+function operate(a, b, operator) {
+  if (currentState === STATES.EQUALS) {
+    switch (operator) {
+      case "+":
+        result = add(a, b);
+        break;
+      case "-":
+        result = subtract(a, b);
+        break;
+      case "*":
+        result = multiply(a, b);
+        break;
+      case "/":
+        result = divide(a, b);
+        break;
+    }
+    const fullExpr = "" + a + operator + b
+    displayValue(fullExpr);
+    currentState = STATES.OPERAND_1;
+  }
 }
 
 function setOperands(num) {
@@ -48,7 +67,6 @@ function setOperands(num) {
 
     console.log("Operand 1 = " + operand1, typeof operand1); // helper
     console.log("Operand 2 = " + operand2, typeof operand2); // helper
-
   }
 
   displayValue(num);
@@ -56,7 +74,7 @@ function setOperands(num) {
 
 function setOperator(value) {
   // Change state to ENTERING_OPERATOR if the first num is entered
-  if (operand1 !== undefined) {
+  if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
     currentState = STATES.OPERATOR;
   } else {
     return;
@@ -86,7 +104,18 @@ function displayValue(value) {
     }
   }
 
-  console.log("Current text content: " + displayEl.textContent); // helper
+  if (currentState === STATES.EQUALS) {
+    displayExp.textContent += value;
+    displayEl.textContent = "" + result;
+  }
+}
+
+function handleEquals(value) {
+  if (currentState === STATES.OPERAND_2) {
+    currentState = STATES.EQUALS;
+    console.log("STATUS: " + currentState); // helper
+    operate(operand1, operand2, operator);
+  }
 }
 
 function handleUserInput(e) {
@@ -103,10 +132,26 @@ function handleUserInput(e) {
 
   if (isNum) setOperands(Number(dataValueAttr));
   if (isOperator) setOperator(dataValueAttr);
+  if (isEquals) handleEquals(dataValueAttr);
+  if (isAction && dataValueAttr === "clear") {
+    clearDisplay();
+    resetValues();
+  }
 }
 
 keypad.addEventListener("click", handleUserInput);
 
+function clearDisplay() {
+  displayEl.textContent = "";
+  displayExp.textContent = "";
+}
+
+function resetValues() {
+  operand1 = undefined;
+  operand2 = undefined;
+  operator = undefined;
+  currentState = STATES.OPERAND_1;
+}
 
 function add(a, b) {
   return a + b;
