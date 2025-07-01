@@ -34,7 +34,7 @@ function operate(a, b, operator) {
     }
     const fullExpr = "" + a + operator + b
     displayValue(fullExpr);
-    currentState = STATES.OPERAND_1;
+    // currentState = STATES.OPERAND_1;
   }
 }
 
@@ -133,38 +133,54 @@ function handleUserInput(e) {
   if (isNum) setOperands(Number(dataValueAttr));
   if (isOperator) setOperator(dataValueAttr);
   if (isEquals) handleEquals(dataValueAttr);
-  if (isAction && dataValueAttr === "clear") {
-    clearDisplay();
-    resetValues();
-  }
+  if (isAction && dataValueAttr === "clear") clearAll();
+  // if (isAction && dataValueAttr === "undo") undo();
 }
 
 keypad.addEventListener("click", handleUserInput);
 
-function clearDisplay() {
+function clearAll() {
   displayEl.textContent = "";
   displayExp.textContent = "";
-}
-
-function resetValues() {
   operand1 = undefined;
   operand2 = undefined;
   operator = undefined;
   currentState = STATES.OPERAND_1;
+  console.clear(); // DELETE
 }
 
+// function undo() {
+//   if (currentState !== STATES.EQUALS && displayEl.textContent !== "") {
+//     console.log("STATUS: " + currentState); // helper
+//     displayEl.textContent = displayEl.textContent.slice(0, -1);
+//   }
+// }
+
 function add(a, b) {
-  return a + b;
+  let result = a + b;
+  if (!Number.isInteger(result)) return roundDecimal(result);
+  return result;
 }
 
 function subtract(a, b) {
-  return a - b;
+  let result = a - b;
+  if (!Number.isInteger(result)) return roundDecimal(result);
+  return result;
 }
 
 function multiply(a, b) {
-  return a * b;
+  let result = a * b;
+  if (!Number.isInteger(result)) return roundDecimal(result);
+  return result;
 }
 
 function divide(a, b) {
-  return a / b;
+  let result = a / b;
+  if (!Number.isInteger(result)) return roundDecimal(result);
+  return result;
+}
+
+function roundDecimal(num) {
+  const decimalsLength = num.toString().split(".")[1].length;
+  return (decimalsLength > 6) ? num.toFixed(6) : num;
 }
