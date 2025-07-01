@@ -21,14 +21,17 @@ function operate() {
 
 function setOperands(num) {
   if (currentState === STATES.OPERAND_1) {
-    console.log(currentState); // helper
+    console.log("STATUS:" + currentState); // helper
+
     if (operand1 === undefined) {
       operand1 = "" + num;
     } else {
       operand1 += String(num);
     }
     operand1 = Number(operand1);
-    console.log("Operand 1: " + operand1, typeof operand1); // helper
+
+    console.log("Operand 1 = " + operand1, typeof operand1); // helper
+
     displayValue(num);
   }
 
@@ -46,31 +49,37 @@ function setOperands(num) {
 }
 
 function setOperator(value) {
-  currentState = STATES.OPERATOR;
-  console.log(currentState);
-  // if (currentState === STATES.OPERATOR && value !== "=") {
-  //   if (!operator) {
-  //     operator = value;
-  //     displayValue(operator);
-  //     // displayEl.textContent += operator;
-  //   } else {
-  //     displayEl.textContent = displayEl.textContent.replace(operator, value);
-  //     operator = value;
-  //   }
-  // }
-  // displayValue(operator);
-
-  if (currentState === STATES.OPERAND_2 && value === "=") {
-    currentState = STATES.EQUALS;
+  if (operand1 !== undefined) {
+    currentState = STATES.OPERATOR;
+  } else {
+    return;
   }
 
-  if (currentState === STATES.OPERATOR) operator = value;
-  displayValue(operator);
+  console.info(currentState); // helper
+  // if (currentState === STATES.OPERAND_2 && value === "=") {
+  //   currentState = STATES.EQUALS;
+  // }
+
+  if (currentState === STATES.OPERATOR) {
+    operator = value;
+
+    console.log("Operator: " + operator); // helper
+
+    displayValue(operator);
+  }
 }
 
 function displayValue(value) {
-  if (typeof value !== "string") displayEl.textContent = displayEl.textContent.concat(String(value));
-  displayEl.textContent.concat(value);
+  displayEl.textContent += value
+
+  console.log("Current text content: " + displayEl.textContent); // helper
+
+  // if (typeof value === "number") {
+  //   // displayEl.textContent = displayEl.textContent.concat(String(value));
+  //   displayEl.textContent += String(value);
+  // } else if(typeof value === "string") {
+  //   displayEl.textContent += value;
+  // }
 }
 
 function handleUserInput(e) {
@@ -80,14 +89,13 @@ function handleUserInput(e) {
   if (!dataValueAttr || !dataTypeAttr) return;
 
   let isNum = dataTypeAttr === "operand";
-  let isOperator = dataTypeAttr === "operator";
+  let isOperator = dataTypeAttr === "operator" && dataValueAttr !== "=";
   let isEquals = dataTypeAttr === "operator" && dataValueAttr === "=";
   let isDot = dataTypeAttr === "dot";
   let isAction = dataTypeAttr === "action";
 
   if (isNum) setOperands(Number(dataValueAttr));
   if (isOperator) setOperator(dataValueAttr);
-  // if (isEquals) operate()
 }
 
 keypad.addEventListener("click", handleUserInput);
