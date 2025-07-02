@@ -32,8 +32,13 @@ function operate(a, b, operator) {
         result = divide(a, b);
         break;
     }
-    const fullExpr = "" + a + operator + b
-    displayValue(fullExpr);
+    console.log("RESULT: " + result);
+
+    let strA;
+    let strB;
+    (a < 0) ? strA = `(${a})` : strA = "" + a;
+    (b < 0) ? strB = `(${b})` : strB= "" + b;
+    displayValue(strA + operator + strB);
     currentState = STATES.OPERAND_1;
   }
 }
@@ -73,7 +78,6 @@ function setOperands(num) {
 }
 
 function setOperator(value) {
-  // Change state to ENTERING_OPERATOR if the first num is entered
   if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
     currentState = STATES.OPERATOR;
   }
