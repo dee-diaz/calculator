@@ -34,7 +34,7 @@ function operate(a, b, operator) {
     }
     const fullExpr = "" + a + operator + b
     displayValue(fullExpr);
-    // currentState = STATES.OPERAND_1;
+    currentState = STATES.OPERAND_1;
   }
 }
 
@@ -53,10 +53,10 @@ function setOperands(num) {
   }
 
 
-
   if (currentState === STATES.OPERATOR) {
     operand2 = "" + num;
     currentState = STATES.OPERAND_2;
+    console.log("STATUS:" + currentState); // helper
     operand2 = Number(operand2);
 
     console.log("Operand 2 = " + operand2, typeof operand2); // helper
@@ -89,13 +89,34 @@ function setOperator(value) {
 }
 
 function displayValue(value) {
-  if (currentState === STATES.OPERAND_1 || currentState === STATES.OPERAND_2) {
-    displayEl.textContent += value;
+  if (currentState === STATES.OPERAND_1) {
+    if (value < 0) {
+      value = `(${value})`;
+      displayEl.textContent = value;
+    } else if (/[()\-]/g.test(displayEl.textContent)) {
+      displayEl.textContent = displayEl.textContent.replace(/[()\-\s]/g, "");
+    } else {
+      displayEl.textContent += value;
+    }
+  }
+
+  if (currentState === STATES.OPERAND_2) {
+    if (value < 0) {
+      displayEl.textContent = displayEl.textContent.slice(0, -(String(value).length - 1));
+      value = `(${value})`;
+      displayEl.textContent += value;
+    } else if (displayEl.textContent.endsWith(")")) {
+      displayEl.textContent = displayEl.textContent.slice(0, -(String(value).length - 3));
+      displayEl.textContent += value;
+    }
+    else {
+      displayEl.textContent += value;
+    }
   }
 
   if (currentState === STATES.OPERATOR) {
     let hasOperatorInDisplay = /[+\-*/]/.test(displayEl.textContent);
-    if (hasOperatorInDisplay) {
+    if (hasOperatorInDisplay && !displayEl.textContent.endsWith((")"))) {
       displayEl.textContent = displayEl.textContent.slice(0, -1) + value;
     } else {
       displayEl.textContent += value;
@@ -133,6 +154,18 @@ function handleUserInput(e) {
   if (isEquals) handleEquals(dataValueAttr);
   if (isAction && dataValueAttr === "clear") clearAll();
   // if (isAction && dataValueAttr === "undo") undo();
+
+  if (isAction && dataValueAttr === "sign") {
+    if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
+      operand1 = changeSign(operand1);
+      console.log("Operand 1 changed sign = " + operand1);
+      displayValue(operand1);
+    } else if (currentState === STATES.OPERAND_2 && operand2 !== undefined) {
+      operand2 = changeSign(operand2);
+      console.log("Operand 2 changed sign = " + operand2);
+      displayValue(operand2);
+    }
+  }
 }
 
 keypad.addEventListener("click", handleUserInput);
@@ -145,6 +178,10 @@ function clearAll() {
   operator = undefined;
   currentState = STATES.OPERAND_1;
   console.clear(); // DELETE
+}
+
+function changeSign(num) {
+  return -num;
 }
 
 // function undo() {
@@ -173,6 +210,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+  if (b === 0) return "Error";
   let result = a / b;
   if (!Number.isInteger(result)) return roundDecimal(result);
   return result;
