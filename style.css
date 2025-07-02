@@ -1,5 +1,5 @@
 :root {
-  --clr-primary: #485261;
+  --clr-primary: #454F5E;
   --clr-secondary: #283345;
   --clr-accent: #C48BE9;
 
@@ -9,6 +9,7 @@
   --clr-text-primary: #ffffff;
   --clr-text-secondary: #b2b2b2;
 
+  --rounded-xl: 0.75rem;
   --rounded-2xl: 1rem;
   --rounded-3xl: 1.5rem;
 }
@@ -135,7 +136,7 @@ textarea:not([rows]) {
 
 
 body {
-  background-color: var(--surface-primary);
+  background-color: var(--clr-bg);
   font-family: "BrittiSans", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -156,7 +157,6 @@ body {
   border-radius: var(--rounded-3xl);
   background-color: var(--surface-primary);
   padding: 4rem 2.5rem 2.5rem;
-  box-shadow: 1px 1px 2px 0px rgba(50, 63, 86, 0.30) inset, -1px -1px 2px 0px rgba(30, 39, 52, 0.50) inset, -10px 10px 20px 0px rgba(30, 39, 52, 0.20), 10px -10px 20px 0px rgba(30, 39, 52, 0.20), -10px -10px 20px 0px rgba(50, 63, 86, 0.90), 10px 10px 25px 0px rgba(30, 39, 52, 0.90);
 }
 
 /* ==========================
@@ -205,12 +205,12 @@ body {
   justify-content: center;
   align-items: center;
   background: #283345;
-  box-shadow: 1px 1px 2px 0px rgba(50, 63, 86, 0.3) inset,
-    -1px -1px 2px 0px rgba(30, 39, 52, 0.5) inset,
-    -4px 4px 8px 0px rgba(30, 39, 52, 0.2),
-    4px -4px 8px 0px rgba(30, 39, 52, 0.2),
-    -4px -4px 8px 0px rgba(50, 63, 86, 0.9),
-    4px 4px 10px 0px rgba(30, 39, 52, 0.9);
+  box-shadow: 1px 1px 2px 0 rgba(50, 63, 86, 0.3) inset,
+    -1px -1px 2px 0 rgba(30, 39, 52, 0.5) inset,
+    -4px 4px 8px 0 rgba(30, 39, 52, 0.2),
+    4px -4px 8px 0 rgba(30, 39, 52, 0.2),
+    -4px -4px 8px 0 rgba(50, 63, 86, 0.9),
+    4px 4px 10px 0 rgba(30, 39, 52, 0.9);
   font-size: 1.5rem;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
   cursor: pointer;
@@ -251,4 +251,37 @@ body {
 .u-icon-sign {
   background: url('icons/plus-minus.svg') center center no-repeat;
   background-size: 24px 24px;
+}
+
+@media (max-width: 500px) {
+  .calculator {
+    width: 18.5rem;
+    height: 29.5rem;
+    border-radius: var(--rounded-3xl);
+    background-color: var(--surface-primary);
+    padding: 2.25rem 1.25rem 1.25rem;
+  }
+
+  .display {
+    height: 4.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .display__expression {
+    font-size: 0.75rem;
+  }
+
+  .keypad__item {
+    border-radius: var(--rounded-xl);
+    width: 3.25rem;
+    height: 3.25rem;
+    font-size: 1.25rem;
+  }
+
+  .u-w-lg {
+    width: 7.5rem;
+  }
+  .u-text-28 {
+    font-size: 1.5rem;
+  }
 }
