@@ -114,8 +114,7 @@ function displayValue(value) {
     } else if (displayEl.textContent.endsWith(")")) {
       displayEl.textContent = displayEl.textContent.slice(0, -(String(value).length - 3));
       displayEl.textContent += value;
-    }
-    else {
+    } else {
       displayEl.textContent += value;
     }
   }
@@ -149,14 +148,11 @@ function setFloatingPoint() {
     console.log("STATUS " + currentState);
 
   } else if (currentState === STATES.OPERAND_2) {
-    if (signChanged) return;
-    if (operand2 === undefined) {
-      operand2 = "0.";
-      displayValue(operand2);
-    } else if (!String(operand2).includes(".")) {
-      operand2 = String(operand2) + ".";
-      displayValue(".")
-    }
+      if (signChanged) return;
+      if (!String(operand2).includes(".")) {
+        operand2 = String(operand2) + ".";
+        displayValue(".")
+      }
   }
   signChanged = false;
   console.log("Operand 2 and DOT= " + operand2);
@@ -189,7 +185,7 @@ function handleUserInput(e) {
   if (isAction && dataValueAttr === "clear") clearAll();
 
   if (isFloatingPoint) setFloatingPoint();
-  // if (isAction && dataValueAttr === "undo") undo();
+  if (isAction && dataValueAttr === "undo") undo();
 
   if (isAction && dataValueAttr === "sign") {
     if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
@@ -224,12 +220,22 @@ function changeSign(num) {
   return -num;
 }
 
-// function undo() {
-//   if (currentState !== STATES.EQUALS && displayEl.textContent !== "") {
-//     console.log("STATUS: " + currentState); // helper
-//     displayEl.textContent = displayEl.textContent.slice(0, -1);
-//   }
-// }
+function undo() {
+switch (currentState) {
+    case STATES.OPERAND_1:
+      operand1 = Number(operand1.toString().slice(0, -1));
+      console.log("Operand 1 backspace = " + operand1);
+      break;
+    case STATES.OPERATOR:
+      operator = undefined;
+      console.log("Operator 1 backspace = " + operator);
+      break;
+    case STATES.OPERAND_2:
+      operand2 = Number(operand2.toString().slice(0, -1));
+      console.log("Operand 2 backspace = " + operand2);
+      break;
+  }
+}
 
 function add(a, b) {
   let result = a + b;
