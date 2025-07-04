@@ -10,6 +10,7 @@ const STATES = {
 };
 
 let currentState = STATES.OPERAND_1;
+let signChanged = false;
 
 let operand1;
 let operand2;
@@ -32,7 +33,7 @@ function operate(a, b, operator) {
         result = divide(a, b);
         break;
     }
-    console.log("RESULT: " + result);
+    console.log("RESULT: " + result, typeof result);
 
     let strA;
     let strB;
@@ -52,6 +53,7 @@ function setOperands(num) {
     } else {
       operand1 += String(num);
     }
+
     operand1 = Number(operand1);
 
     console.log("Operand 1 = " + operand1, typeof operand1); // helper
@@ -133,6 +135,33 @@ function displayValue(value) {
   }
 }
 
+function setFloatingPoint() {
+  if (currentState === STATES.OPERAND_1) {
+    if (signChanged) return;
+    if (operand1 === undefined) {
+      operand1 = "0.";
+      displayValue(operand1);
+    } else if (!String(operand1).includes(".")) {
+      operand1 = String(operand1) + ".";
+      displayValue(".");
+    }
+    console.log("Operand 1 and DOT= " + operand1);
+    console.log("STATUS " + currentState);
+
+  } else if (currentState === STATES.OPERAND_2) {
+    if (signChanged) return;
+    if (operand2 === undefined) {
+      operand2 = "0.";
+      displayValue(operand2);
+    } else if (!String(operand2).includes(".")) {
+      operand2 = String(operand2) + ".";
+      displayValue(".")
+    }
+  }
+  signChanged = false;
+  console.log("Operand 2 and DOT= " + operand2);
+}
+
 function handleEquals(value) {
   if (currentState === STATES.OPERAND_2) {
     currentState = STATES.EQUALS;
@@ -140,6 +169,7 @@ function handleEquals(value) {
     operate(operand1, operand2, operator);
   }
 }
+
 
 function handleUserInput(e) {
   const dataTypeAttr = e.target.getAttribute("data-type");
@@ -150,22 +180,27 @@ function handleUserInput(e) {
   let isNum = dataTypeAttr === "operand";
   let isOperator = dataTypeAttr === "operator" && dataValueAttr !== "=";
   let isEquals = dataTypeAttr === "operator" && dataValueAttr === "=";
-  let isDot = dataTypeAttr === "dot";
+  let isFloatingPoint = dataTypeAttr === "floating-point";
   let isAction = dataTypeAttr === "action";
 
   if (isNum) setOperands(Number(dataValueAttr));
   if (isOperator) setOperator(dataValueAttr);
   if (isEquals) handleEquals(dataValueAttr);
   if (isAction && dataValueAttr === "clear") clearAll();
+
+  if (isFloatingPoint) setFloatingPoint();
   // if (isAction && dataValueAttr === "undo") undo();
 
   if (isAction && dataValueAttr === "sign") {
     if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
       operand1 = changeSign(operand1);
+      signChanged = true;
       console.log("Operand 1 changed sign = " + operand1);
+      console.log("STATUS = " + currentState);
       displayValue(operand1);
     } else if (currentState === STATES.OPERAND_2 && operand2 !== undefined) {
       operand2 = changeSign(operand2);
+      signChanged = true;
       console.log("Operand 2 changed sign = " + operand2);
       displayValue(operand2);
     }
@@ -180,6 +215,7 @@ function clearAll() {
   operand1 = undefined;
   operand2 = undefined;
   operator = undefined;
+  signChanged = false;
   currentState = STATES.OPERAND_1;
   console.clear(); // DELETE
 }
@@ -222,5 +258,5 @@ function divide(a, b) {
 
 function roundDecimal(num) {
   const decimalsLength = num.toString().split(".")[1].length;
-  return (decimalsLength > 6) ? num.toFixed(6) : num;
+  return (decimalsLength > 6) ? Number(parseFloat(num.toFixed(6))) : num;
 }
