@@ -81,9 +81,6 @@ function setOperands(num) {
   } else if (currentState === STATES.OPERAND_2) {
     operand2 += String(num);
     operand2 = Number(operand2);
-
-    console.log("Operand 1 = " + operand1, typeof operand1); // helper
-    console.log("Operand 2 = " + operand2, typeof operand2); // helper
   }
 
   displayValue(num);
@@ -95,6 +92,11 @@ function setOperator(value) {
     operand1 = result;
     result = undefined;
     displayValue(operand1);
+  }
+
+  if (currentState === STATES.OPERAND_1 && typeof operand1 === "string" && operand1.endsWith(".")) {
+    operand1 = Number(operand1.slice(0, -1));
+    displayEl.textContent = displayEl.textContent.slice(0, -1);
   }
 
   if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
@@ -152,6 +154,10 @@ function displayValue(value) {
 }
 
 function setFloatingPoint() {
+  if (result) {
+    clearAll();
+    result = undefined
+  }
   if (currentState === STATES.OPERAND_1) {
     if (signChanged) return;
     if (operand1 === undefined) {
@@ -161,8 +167,6 @@ function setFloatingPoint() {
       operand1 = String(operand1) + ".";
       displayValue(".");
     }
-    console.log("Operand 1 and DOT= " + operand1);
-    console.log("STATUS " + currentState);
 
   } else if (currentState === STATES.OPERAND_2) {
       if (signChanged) return;
@@ -176,9 +180,13 @@ function setFloatingPoint() {
 }
 
 function handleEquals(value) {
+  if (currentState === STATES.OPERAND_2 && typeof operand2 === "string" && operand2.endsWith(".")) {
+    operand2 = Number(operand2.slice(0, -1));
+    displayEl.textContent = displayEl.textContent.slice(0, -1);
+  }
+
   if (currentState === STATES.OPERAND_2) {
     currentState = STATES.EQUALS;
-    console.log("STATUS: " + currentState); // helper
     operate(operand1, operand2, operator);
   }
 }
@@ -252,14 +260,17 @@ function undo() {
   switch (currentState) {
     case STATES.OPERAND_1:
       operand1 = Number(operand1.toString().slice(0, -1));
+      displayEl.textContent = displayEl.textContent.slice(0, -1);
       console.log("Operand 1 backspace = " + operand1);
       break;
     case STATES.OPERATOR:
       operator = undefined;
+      displayEl.textContent = displayEl.textContent.slice(0, -1);
       console.log("Operator 1 backspace = " + operator);
       break;
     case STATES.OPERAND_2:
       operand2 = Number(operand2.toString().slice(0, -1));
+      displayEl.textContent = displayEl.textContent.slice(0, -1);
       console.log("Operand 2 backspace = " + operand2);
       break;
   }
