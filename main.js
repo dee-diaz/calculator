@@ -40,11 +40,21 @@ function operate(a, b, operator) {
     (a < 0) ? strA = `(${a})` : strA = "" + a;
     (b < 0) ? strB = `(${b})` : strB= "" + b;
     displayValue(strA + operator + strB);
+
+
     currentState = STATES.OPERAND_1;
   }
+
+  operand1 = undefined;
+  operand2 = undefined;
 }
 
 function setOperands(num) {
+  if (result) {
+    clearAll();
+    result = undefined
+  }
+
   if (currentState === STATES.OPERAND_1) {
     console.log("STATUS:" + currentState); // helper
 
@@ -80,6 +90,13 @@ function setOperands(num) {
 }
 
 function setOperator(value) {
+  if (result && result !== "Error") {
+    clearAll();
+    operand1 = result;
+    result = undefined;
+    displayValue(operand1);
+  }
+
   if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
     currentState = STATES.OPERATOR;
   }
@@ -188,6 +205,12 @@ function handleUserInput(e) {
   if (isAction && dataValueAttr === "undo") undo();
 
   if (isAction && dataValueAttr === "sign") {
+    if (result) {
+      clearAll();
+      operand1 = result;
+      result = undefined;
+    }
+
     if (currentState === STATES.OPERAND_1 && operand1 !== undefined) {
       operand1 = changeSign(operand1);
       signChanged = true;
@@ -221,7 +244,12 @@ function changeSign(num) {
 }
 
 function undo() {
-switch (currentState) {
+  if (result) {
+    clearAll();
+    return;
+  }
+
+  switch (currentState) {
     case STATES.OPERAND_1:
       operand1 = Number(operand1.toString().slice(0, -1));
       console.log("Operand 1 backspace = " + operand1);
