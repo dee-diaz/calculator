@@ -227,7 +227,6 @@ function clearAll() {
   operator = undefined;
   signChanged = false;
   currentState = STATES.OPERAND_1;
-  console.clear(); // DELETE
 }
 
 function changeSign(num) {
