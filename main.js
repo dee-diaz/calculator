@@ -1,15 +1,16 @@
 import utils from "./components/utils.js";
 
-const keypad = document.querySelector(".keypad");
-const displayEl = document.querySelector(".display__result");
-const displayExp = document.querySelector(".display__expression");
-
 const STATE = {
   OPERAND_1: "OPERAND_1",
   OPERAND_2: "OPERAND_2",
   OPERATOR: "OPERATOR",
   RESULT: "RESULT",
 };
+
+const keypad = document.querySelector(".keypad");
+const displayEl = document.querySelector(".display__result");
+const displayExp = document.querySelector(".display__expression");
+
 
 const calculator = {
   state: STATE.OPERAND_1,
@@ -72,6 +73,12 @@ const calculator = {
         this.result = utils.divide(a, b);
         break;
     }
+
+    if (typeof this.result === 'number' && !Number.isInteger(this.result)) {
+      const decimalsLength = this.result.toString().split(".")[1].length;
+      if (decimalsLength > 6) this.result = utils.roundDecimal(this.result);
+    }
+
     console.log(this.result);
   },
 

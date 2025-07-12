@@ -20,8 +20,7 @@ function divide(a, b) {
 
 
 function roundDecimal(num) {
-  const decimalsLength = num.toString().split(".")[1].length;
-  return (decimalsLength > 6) ? Number(parseFloat(num.toFixed(6))) : num;
+  return Number(num.toFixed(6));
 }
 
 function strToNum(str) {
