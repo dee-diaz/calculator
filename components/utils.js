@@ -25,7 +25,7 @@ function roundDecimal(num) {
 }
 
 function strToNum(str) {
-  return Number(str);
+  return parseFloat(str);
 }
 
 export default {
