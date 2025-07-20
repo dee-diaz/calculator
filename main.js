@@ -1,4 +1,5 @@
 import utils from "./components/utils.js";
+import render from "./components/render.js"
 
 const STATE = {
   OPERAND_1: "OPERAND_1",
@@ -8,8 +9,6 @@ const STATE = {
 };
 
 const keypad = document.querySelector(".keypad");
-const displayEl = document.querySelector(".display__result");
-const displayExp = document.querySelector(".display__expression");
 
 const calculator = {
   state: STATE.OPERAND_1,
@@ -19,7 +18,7 @@ const calculator = {
   result: "",
 
   input: function (type, value) {
-    if (type === "operand") {
+    if (type === "operand" && typeof this.result !== null) {
       if (this.state === STATE.OPERATOR) this.state = STATE.OPERAND_2;
       if (this.state === STATE.RESULT) this.clearAll();
       this.appendOperand(value);
@@ -34,9 +33,8 @@ const calculator = {
           this.clearAll();
           this.appendOperand(result);
         }
-        this.state = STATE.OPERATOR;
-        this.operator = value;
-        console.log(this.operator);
+        if (this.operand1 !== "") this.state = STATE.OPERATOR; //
+        this.appendOperator(value);
 
       } else if(this.operand1 !== "" && this.operand2 !== "") {
         this.state = STATE.RESULT;
@@ -63,6 +61,17 @@ const calculator = {
       this.operand2 += value; // str
       console.log(this.operand2);
     }
+    render.updateMainDisplay(value);
+  },
+
+  appendOperator: function(value) {
+    if (this.operator !== "") render.displayUndo();
+
+    if (this.state === STATE.OPERATOR) {
+      this.operator = value;
+      render.updateMainDisplay(this.operator);
+    }
+    console.log(this.operator);
   },
 
   changeOperandSign: function() {
@@ -99,7 +108,15 @@ const calculator = {
       if (decimalsLength > 6) this.result = utils.roundDecimal(this.result);
     }
 
+    render.resetMainDisplay();
+    render.updateMainDisplay(this.result);
+    this.saveExpression(a, b, operator);
     console.log(this.result, this.state);
+  },
+
+  saveExpression: function(a, b, operator) {
+    const expression = "" + a + operator + b;
+    render.updateExpDisplay(expression);
   },
 
   undo: function() {
@@ -108,17 +125,21 @@ const calculator = {
     switch (this.state) {
     case STATE.OPERAND_1:
       if (this.operand1.length > 0) this.operand1 = this.operand1.slice(0, -1);
-      console.log(this.operand1);
+      console.log(this.operand1, this.state);
       break;
     case STATE.OPERATOR:
+      if (this.operator.slice(0, -1) === "") this.state = STATE.OPERAND_1;
       this.operator = "";
-      console.log(this.operator);
+      console.log(this.operator, this.state);
       break;
     case STATE.OPERAND_2:
+      if (this.operand2.slice(0, -1) === "") this.state = STATE.OPERATOR;
       if (this.operand2.length > 0) this.operand2 = this.operand2.slice(0, -1);
-      console.log(this.operand2);
+      console.log(this.operand2, this.state);
       break;
   }
+
+    render.displayUndo();
   },
 
   clearAll: function () {
@@ -127,6 +148,8 @@ const calculator = {
     this.operator = "";
     this.result = "";
     this.state = STATE.OPERAND_1;
+    render.resetMainDisplay();
+    render.resetExpressionDisplay();
     console.clear(); // DELETE IN PROD
   },
 
