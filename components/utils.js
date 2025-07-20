@@ -27,6 +27,10 @@ function strToNum(str) {
   return parseFloat(str);
 }
 
+function changeSign(num) {
+  return -num;
+}
+
 export default {
   add,
   subtract,
@@ -34,4 +38,5 @@ export default {
   divide,
   roundDecimal,
   strToNum,
+  changeSign,
 };

@@ -46,6 +46,7 @@ const calculator = {
 
     if (type === "action") {
       if (value === "clear") this.clearAll();
+      if (value === "sign") this.changeOperandSign();
     }
 
     if (type === "decimal-point") {
@@ -60,6 +61,16 @@ const calculator = {
     } else if (this.state === STATE.OPERAND_2) {
       this.operand2 += value; // str
       console.log(this.operand2);
+    }
+  },
+
+  changeOperandSign: function() {
+    if (this.state === STATE.OPERAND_1 && this.operand1 !== "") {
+      this.operand1 = utils.changeSign(this.operand1).toString();
+      console.log(this.operand1)
+    } else if (this.state === STATE.OPERAND_2 && this.operand2 !== "") {
+      this.operand2 = utils.changeSign(this.operand2).toString();
+      console.log(this.operand2)
     }
   },
 
