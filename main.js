@@ -11,7 +11,6 @@ const keypad = document.querySelector(".keypad");
 const displayEl = document.querySelector(".display__result");
 const displayExp = document.querySelector(".display__expression");
 
-
 const calculator = {
   state: STATE.OPERAND_1,
   operand1: "",
@@ -22,14 +21,23 @@ const calculator = {
   input: function (type, value) {
     if (type === "operand") {
       if (this.state === STATE.OPERATOR) this.state = STATE.OPERAND_2;
+      if (this.state === STATE.RESULT) this.clearAll();
       this.appendOperand(value);
     }
 
     if (type === "operator") {
+      if (this.state === STATE.OPERAND_2 && value !== "=") return;
+      if (this.state === STATE.OPERAND_1 && this.result) this.appendOperand(this.result);
       if (value !== "=") {
+        if (this.state === STATE.RESULT) {
+          const result = this.result;
+          this.clearAll();
+          this.appendOperand(result);
+        }
         this.state = STATE.OPERATOR;
         this.operator = value;
         console.log(this.operator);
+
       } else {
         this.state = STATE.RESULT;
         this.calculate(this.operand1, this.operand2, this.operator);
@@ -74,18 +82,19 @@ const calculator = {
         break;
     }
 
-    if (typeof this.result === 'number' && !Number.isInteger(this.result)) {
+    if (typeof this.result === "number" && !Number.isInteger(this.result)) {
       const decimalsLength = this.result.toString().split(".")[1].length;
       if (decimalsLength > 6) this.result = utils.roundDecimal(this.result);
     }
 
-    console.log(this.result);
+    console.log(this.result, this.state);
   },
 
   clearAll: function () {
     this.operand1 = "";
     this.operand2 = "";
     this.operator = "";
+    this.result = "";
     this.state = STATE.OPERAND_1;
     console.clear(); // DELETE IN PROD
   },
