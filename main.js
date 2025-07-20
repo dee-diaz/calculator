@@ -38,7 +38,7 @@ const calculator = {
         this.operator = value;
         console.log(this.operator);
 
-      } else {
+      } else if(this.operand1 !== "" && this.operand2 !== "") {
         this.state = STATE.RESULT;
         this.calculate(this.operand1, this.operand2, this.operator);
       }
@@ -47,6 +47,7 @@ const calculator = {
     if (type === "action") {
       if (value === "clear") this.clearAll();
       if (value === "sign") this.changeOperandSign();
+      if (value === "undo") this.undo();
     }
 
     if (type === "decimal-point") {
@@ -99,6 +100,25 @@ const calculator = {
     }
 
     console.log(this.result, this.state);
+  },
+
+  undo: function() {
+    if (this.state === STATE.RESULT) this.clearAll();
+
+    switch (this.state) {
+    case STATE.OPERAND_1:
+      if (this.operand1.length > 0) this.operand1 = this.operand1.slice(0, -1);
+      console.log(this.operand1);
+      break;
+    case STATE.OPERATOR:
+      this.operator = "";
+      console.log(this.operator);
+      break;
+    case STATE.OPERAND_2:
+      if (this.operand2.length > 0) this.operand2 = this.operand2.slice(0, -1);
+      console.log(this.operand2);
+      break;
+  }
   },
 
   clearAll: function () {
