@@ -7,7 +7,7 @@ The project is written in **vanilla JS** and split into separate modules for log
 
 ## 🚀 Live Demo
 
-[View Live Demo](https://dee-diaz.github.io/calculator/)
+<a href="https://dee-diaz.github.io/calculator/" target="_blank">View Live Demo</a>
 
 ## ✨ Features
 
@@ -24,7 +24,7 @@ The project is written in **vanilla JS** and split into separate modules for log
   - Division by zero protection
   - Floating point precision management
   - Input validation
-  
+
 - **Responsive Design**: Works on desktop and mobile devices
 
 ## 🛠️ Built With
