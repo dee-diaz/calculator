@@ -56,10 +56,8 @@ const calculator = {
   appendOperand: function (value) {
     if (this.state === STATE.OPERAND_1) {
       this.operand1 += value; // str
-      console.log(this.operand1);
     } else if (this.state === STATE.OPERAND_2) {
       this.operand2 += value; // str
-      console.log(this.operand2);
     }
     render.updateMainDisplay(value);
   },
@@ -71,7 +69,6 @@ const calculator = {
       this.operator = value;
       render.updateMainDisplay(this.operator);
     }
-    console.log(this.operator);
   },
 
 
@@ -79,12 +76,10 @@ const calculator = {
     if (this.state === STATE.OPERAND_1 && this.operand1 !== "") {
       this.operand1 = utils.changeSign(this.operand1).toString();
       render.updateOperandSign(this.operand1);
-      console.log(this.operand1);
     } else if (this.state === STATE.OPERAND_2 && this.operand2 !== "") {
       const expression = this.operand1 + this.operator;
       this.operand2 = utils.changeSign(this.operand2).toString();
       render.updateOperandSign(this.operand2, expression);
-      console.log(this.operand2);
     }
   },
 
@@ -115,7 +110,6 @@ const calculator = {
     render.resetMainDisplay();
     render.updateMainDisplay(this.result);
     this.saveExpression(a, b, operator);
-    console.log(this.result, this.state);
   },
 
   saveExpression: function(a, b, operator) {
@@ -131,17 +125,14 @@ const calculator = {
     switch (this.state) {
     case STATE.OPERAND_1:
       if (this.operand1.length > 0) this.operand1 = this.operand1.slice(0, -1);
-      console.log(this.operand1, this.state);
       break;
     case STATE.OPERATOR:
       if (this.operator.slice(0, -1) === "") this.state = STATE.OPERAND_1;
       this.operator = "";
-      console.log(this.operator, this.state);
       break;
     case STATE.OPERAND_2:
       if (this.operand2.slice(0, -1) === "") this.state = STATE.OPERATOR;
       if (this.operand2.length > 0) this.operand2 = this.operand2.slice(0, -1);
-      console.log(this.operand2, this.state);
       break;
   }
 
@@ -156,7 +147,6 @@ const calculator = {
     this.state = STATE.OPERAND_1;
     render.resetMainDisplay();
     render.resetExpressionDisplay();
-    console.clear(); // DELETE IN PROD
   },
 
   setDecimalPoint: function () {
