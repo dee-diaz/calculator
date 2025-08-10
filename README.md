@@ -3,7 +3,7 @@
 A simple, responsive JavaScript calculator with a clean UI and support for basic arithmetic operations, decimal numbers, sign change, and undo functionality.  
 The project is written in **vanilla JS** and split into separate modules for logic, rendering, and utility functions.
 
-![Calculator Preview](screenshot.png)
+![Calculator Preview](./screenshot.png)
 
 ## 🚀 Live Demo
 
@@ -12,16 +12,19 @@ The project is written in **vanilla JS** and split into separate modules for log
 ## ✨ Features
 
 - **Basic Operations**: Addition, subtraction, multiplication, division
+
 - **Advanced Functionality**:
   - Decimal point operations
   - Negative number handling
   - Parentheses display for negative values
   - Undo functionality
   - Clear all operations
+
 - **Edge Case Handling**:
   - Division by zero protection
   - Floating point precision management
   - Input validation
+  
 - **Responsive Design**: Works on desktop and mobile devices
 
 ## 🛠️ Built With
