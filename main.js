@@ -74,13 +74,17 @@ const calculator = {
     console.log(this.operator);
   },
 
+
   changeOperandSign: function() {
     if (this.state === STATE.OPERAND_1 && this.operand1 !== "") {
       this.operand1 = utils.changeSign(this.operand1).toString();
-      console.log(this.operand1)
+      render.updateOperandSign(this.operand1);
+      console.log(this.operand1);
     } else if (this.state === STATE.OPERAND_2 && this.operand2 !== "") {
+      const expression = this.operand1 + this.operator;
       this.operand2 = utils.changeSign(this.operand2).toString();
-      console.log(this.operand2)
+      render.updateOperandSign(this.operand2, expression);
+      console.log(this.operand2);
     }
   },
 

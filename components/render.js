@@ -22,10 +22,17 @@ function displayUndo() {
 }
 
 
+function updateOperandSign(operand, expression) {
+  resetMainDisplay();
+  const formatted = Number(operand) < 0 ? `(${operand})` : operand;
+  updateMainDisplay(expression ? `${expression}${formatted}` : formatted);
+}
+
 export default {
   updateMainDisplay,
   updateExpDisplay,
   resetMainDisplay,
   resetExpressionDisplay,
   displayUndo,
-}
+  updateOperandSign,
+};
