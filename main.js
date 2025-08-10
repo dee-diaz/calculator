@@ -18,7 +18,7 @@ const calculator = {
   result: "",
 
   input: function (type, value) {
-    if (type === "operand" && typeof this.result !== null) {
+    if (type === "operand" && this.result !== null) {
       if (this.state === STATE.OPERATOR) this.state = STATE.OPERAND_2;
       if (this.state === STATE.RESULT) this.clearAll();
       this.appendOperand(value);
@@ -119,7 +119,9 @@ const calculator = {
   },
 
   saveExpression: function(a, b, operator) {
-    const expression = "" + a + operator + b;
+    const formattedA = (a < 0) ? `(${a})` : a;
+    const formattedB = (b < 0) ? `(${b})` : b;
+    const expression = "" + formattedA + operator + formattedB;
     render.updateExpDisplay(expression);
   },
 
