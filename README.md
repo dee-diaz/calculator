@@ -70,25 +70,3 @@ The project follows modern JavaScript best practices with a modular architecture
 5. **Undo**: Use the delete button to remove the last input
 6. **Calculate**: Press = to execute the operation
 
-## 📚 Learning Outcomes
-
-While building this project, I practiced:
-
-- **Modular JavaScript** — separating logic (`main.js`), UI rendering (`render.js`), and helpers (`utils.js`)
-- **Finite State Machines** — managing app flow with clear states (`OPERAND_1`, `OPERATOR`, `OPERAND_2`, `RESULT`)
-- **DOM Manipulation** — updating the display efficiently without re-rendering everything
-- **Event Delegation** — handling all button clicks through a single event listener
-- **Code Refactoring** — improving readability and maintainability by removing duplicate code
-- **Edge Case Handling** — e.g., division by zero, sign changes for both operands, decimal point validation
-
-## 🚀 Future Enhancements
-
-- [ ] Keyboard input support
-
-## 🤝 Contributing
-
-This is a learning project, but feedback and suggestions are welcome! Feel free to open an issue or submit a pull request.
-
-## 📄 License
-
-This project is open source and available under the MIT License.
